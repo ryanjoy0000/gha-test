@@ -6,14 +6,27 @@ name: comment workflow
       - opened
 
 jobs:
-  job-comment:
+  job-comment-by-GHAction:
     runs-on: ubuntu-latest
     steps:
       - name: "get github context"
         run: echo '${{ toJSON(github.event)}}' | jq
         shell: bash
-      - name: "create comment"
+      - name: "create comment with GHA"
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{github.event.issue.number}}
           body: Thank you for creating the ticket.
+  job-comment-by-GHApi:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "create comment by GH Api"
+        run: |
+          gh api -X POST \
+            http://api.github.com/repo/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER}/comments \
+          -f body='This comment is made by Github API'
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          ORGANIZATION: ${{github.event.organisation.login}}
+          REPOSITORY: ${{github.event.repository.name}}
+          ISSUE_NUMBER: ${{github.event.issue.number}}
