@@ -12,3 +12,8 @@ jobs:
       - name: "get github context"
         run: echo '${{ toJSON(github.event)}}' | jq
         shell: bash
+      - name: "create comment"
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{github.event.issue.number}}
+          body: Thank you for creating the ticket.
