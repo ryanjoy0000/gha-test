@@ -1,0 +1,26 @@
+name: Yo boy! - workflow
+
+"on":
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  job-hello:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: hello action
+        run: echo "Yo Ryan!"
+        shell: bash
+  job-bye:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: bye action
+        run: echo "chal chote! milte!"
+        shell: bash
